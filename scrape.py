@@ -1,15 +1,29 @@
-import os
-import selenium
+#  had to install chromedriver
 from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
 import time
-from PIL import Image
-import io
-import requests
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.common.exceptions import ElementClickInterceptedException
 
+PATH = "/Users/brianarchibald/Desktop/chromedriver"
+driver = webdriver.Chrome(PATH)
 
-driver = webdriver.Chrome(ChromeDriverManager().install())
+driver.get("https://techwithtim.net")
+print(driver.title)  # title of the site
 
-search_url = "https://www.google.com/search?q={q}&tbm=isch&tbs=sur%3Afc&hl=en&ved=0CAIQpwVqFwoTCKCa1c6s4-oCFQAAAAAdAAAAABAC&biw=1251&bih=568"
-driver.get(search_url.format(q='Car'))
+search = driver.find_element_by_name("s")
+search.send_keys("test")
+search.send_keys(Keys.RETURN)
+
+try:
+    main = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.ID, "main"))
+    )
+except Exception as e:
+    print(e)
+    driver.quit()
+
+main = driver.find_element_by_id("main")
+print(main.text)
