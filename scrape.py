@@ -13,19 +13,50 @@ driver = webdriver.Chrome(PATH)
 driver.get("https://techwithtim.net")
 print(driver.title)  # title of the site
 
-search = driver.find_element_by_name("s")
-search.send_keys("test")
-search.send_keys(Keys.RETURN)
+# search = driver.find_element_by_name("s")
+# search.send_keys("test")
+# search.send_keys(Keys.RETURN)
 
+# try:
+#     main = WebDriverWait(driver, 10).until(
+#         EC.presence_of_element_located((By.ID, "main"))
+#     )
+
+#     articles = main.find_element_by_tag_name("article")
+#     for article in articles:
+#         header = article.find_element_by_class_name("entry_summary")
+#         print(header.text)
+
+# finally:
+#     driver.quit()
+
+link = driver.find_element_by_link_text("Python Programming")
+link.click()
+
+# need to wait til element exists before clicking
 try:
-    main = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.ID, "main"))
+    element = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.LINK_TEXT, "Beginner Python Tutorials"))
     )
+    element.click()
 
-    articles = main.find_element_by_tag_name("article")
-    for article in articles:
-        header = article.find_element_by_class_name("entry_summary")
-        print(header.text)
+    element = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.ID, "sow-button-19310003"))
+    )
+    element.click()
 
-finally:
+    # to clear a field before if its a text field
+    # element.clear()
+
+    # now back to homepage
+    driver.back()
+    driver.back()
+    driver.back()
+
+    # can use forward too
+    # driver.forward()
+
+
+except Exception:
     driver.quit()
+
